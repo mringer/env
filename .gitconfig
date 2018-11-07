@@ -1,0 +1,34 @@
+[core]
+        excludesfile = /Users/matthewringer/.gitignore_global
+[difftool "sourcetree"]
+        cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+        path =
+[mergetool "sourcetree"]
+        cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+        trustExitCode = true
+[user]
+        name = Matt Ringer
+        email = mringer@gmail.com
+[alias]
+        pl = log --graph --decorate=full --pretty=oneline --abbrev-commit
+        co = checkout
+        br = branch
+        df = diff
+        dif = diff
+        ca = commit -a
+        ri = "!git rebase -i upstream/${1:-develop}"
+        added = diff --cached --name-only
+        cam = commit -a --amend --no-edit
+        br-name = "!git rev-parse --abbrev-ref HEAD"
+        url = "!f() { URL=$(git config --get remote.upstream-http.url); echo ${URL/.git/}; }; f"
+	list = "!git diff-tree --no-commit-id --name-only -r ${1:-HEAD}"
+        sync   = "!git fetch upstream && git rebase upstream/${1:-develop}" 
+        export = "!sh ~/scripts/github-pr-export.sh"
+        submit = "!git push upstream $(git br-name):master"
+        patch = "!f() { URL=$(git config --get remote.upstream-http.url); curl -L ${URL/.git//pull/$1.patch} | git am; }; f"
+        deploy-qa = "!git push upstream $(git br-name):qa --follow-tags"
+        deploy-demo = "!git push upstream $(git br-name):demo --follow-tags"
+        deploy = "!git push upstream $(git br-name):${1:-qa} --follow-tags"
+
+[push]
+	followTags = false
